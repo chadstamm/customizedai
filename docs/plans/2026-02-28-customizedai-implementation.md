@@ -1,4 +1,4 @@
-# MyCustomAI Implementation Plan
+# CustomizedAI Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Next.js 16, React 19, TypeScript, Tailwind CSS v4, Framer Motion, @anthropic-ai/sdk, @vercel/analytics
 
-**Design doc:** `docs/plans/2026-02-28-mycustomai-design.md`
+**Design doc:** `docs/plans/2026-02-28-customizedai-design.md`
 
 **Reference project:** `~/Desktop/Claude Code Projects/writelikeme/` — follow its patterns for WizardContext, API routes, streaming, voice input, and component structure.
 
@@ -26,7 +26,7 @@
 
 **Step 1: Initialize Next.js project**
 
-Run inside `~/Desktop/Claude Code Projects/mycustomai/`:
+Run inside `~/Desktop/Claude Code Projects/customizedai/`:
 
 ```bash
 npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --no-import-alias --turbopack
@@ -69,11 +69,11 @@ git add -A && git commit -m "feat: scaffold Next.js project with dependencies"
 - Modify: `src/app/layout.tsx`
 - Create: `public/favicon.svg`
 
-**Reference:** `~/Desktop/Claude Code Projects/writelikeme/src/app/globals.css` for pattern, but use MyCustomAI's color palette.
+**Reference:** `~/Desktop/Claude Code Projects/writelikeme/src/app/globals.css` for pattern, but use CustomizedAI's color palette.
 
 **Step 1: Write globals.css**
 
-Replace `src/app/globals.css` with the MyCustomAI design tokens and component classes. Key tokens:
+Replace `src/app/globals.css` with the CustomizedAI design tokens and component classes. Key tokens:
 
 ```css
 @import "tailwindcss";
@@ -110,7 +110,7 @@ Include: button classes (`.btn-primary`, `.btn-secondary`, `.btn-ghost`), textar
 
 **Step 2: Write layout.tsx**
 
-Use Playfair Display (serif display) and Inter (sans body). Follow WriteLikeMe's `layout.tsx` pattern for font loading, metadata, and structure. Set title to "MyCustomAI | Custom Instructions for Every AI" and appropriate meta description/OG tags.
+Use Playfair Display (serif display) and Inter (sans body). Follow WriteLikeMe's `layout.tsx` pattern for font loading, metadata, and structure. Set title to "CustomizedAI | Custom Instructions for Every AI" and appropriate meta description/OG tags.
 
 **Step 3: Create a simple SVG favicon**
 
@@ -436,7 +436,7 @@ Adapt WriteLikeMe's WizardContext with these changes:
 - Actions include: `TOGGLE_MODEL`, `SET_WRITING_CODEX`, `SET_PERSONAL_CONSTITUTION`, `SAVE_ANSWER`, `SET_INSIGHT`, `START_GENERATING`, `SET_GENERATION_PHASE`, `APPEND_STREAMED_TEXT`, `GENERATION_SUCCESS` (payload is `GenerationResult`), `GENERATION_ERROR`, `SET_STEP`, `NEXT_STEP`, `PREV_STEP`, `RESTORE_STATE`, `RESET`
 - `TOGGLE_MODEL` adds or removes a model from `selectedModels[]`
 - `GENERATION_SUCCESS` parses the accumulated `streamedText` as JSON into `GenerationResult`
-- Keep the same localStorage persistence pattern (key: `mycustomai-wizard-state`)
+- Keep the same localStorage persistence pattern (key: `customizedai-wizard-state`)
 - Keep the same `analyzeAnswerInBackground` fire-and-forget pattern
 - Keep the same `waitForPendingInsights` + `performStreamingGeneration` pattern
 - The `buildGenerationBody` should include `selectedModels`, `writingCodex`, `personalConstitution`, `answers`, and `analyzedInsights`
@@ -707,7 +707,7 @@ git add -A && git commit -m "feat: add background answer analysis API route"
 
 **Step 1: Write next-question route**
 
-This is new — WriteLikeMe uses pre-defined questions, but MyCustomAI uses AI-driven questions.
+This is new — WriteLikeMe uses pre-defined questions, but CustomizedAI uses AI-driven questions.
 
 POST handler that accepts:
 ```json
@@ -1008,7 +1008,7 @@ git add -A && git commit -m "feat: add generated illustrations for hero and mode
 **IMPORTANT:** Invoke the `story-brand` skill to:
 - Refine the hero headline and subheadline
 - Write the "Why This Matters" section copy
-- Ensure the landing page positions the USER as the hero and MyCustomAI as the guide
+- Ensure the landing page positions the USER as the hero and CustomizedAI as the guide
 - Create clear PEACE SoundBytes for the value proposition
 
 **Step 2: Update IntroStep with refined copy**
@@ -1066,7 +1066,7 @@ git add -A && git commit -m "feat: polish responsive design, loading states, err
 **Step 1: Create GitHub repo**
 
 ```bash
-gh repo create mycustomai --public --source=. --push
+gh repo create customizedai --public --source=. --push
 ```
 
 **Step 2: Deploy with Vercel**

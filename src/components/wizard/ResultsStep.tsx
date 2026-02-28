@@ -161,7 +161,7 @@ export function ResultsStep() {
           </motion.button>
 
           <p className="text-xs mt-6" style={{ color: 'var(--muted)', opacity: 0.6 }}>
-            Made with MyCustomAI
+            Made with CustomizedAI
           </p>
         </div>
       </div>

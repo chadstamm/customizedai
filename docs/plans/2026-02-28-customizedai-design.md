@@ -1,10 +1,10 @@
-# MyCustomAI — Design Document
+# CustomizedAI — Design Document
 
 ## Overview
 
-MyCustomAI is a free, single-page wizard app that generates tailored custom instructions for multiple AI platforms. Users select which AI models they use, optionally provide their writing codex and/or personal constitution, answer an AI-driven series of questions, and receive output mapped exactly to each model's custom instruction fields.
+CustomizedAI is a free, single-page wizard app that generates tailored custom instructions for multiple AI platforms. Users select which AI models they use, optionally provide their writing codex and/or personal constitution, answer an AI-driven series of questions, and receive output mapped exactly to each model's custom instruction fields.
 
-**Name:** MyCustomAI
+**Name:** CustomizedAI
 **Business Model:** Free (no email gate, no paywall)
 **Persistence:** One-shot (localStorage for session recovery only)
 **Deployment:** Vercel
@@ -177,7 +177,7 @@ The response is streamed and parsed into the tabbed results UI.
 
 - **WizardContext** (React Context + useReducer) — consistent with sibling apps
 - **useWizard()** custom hook for component access
-- **localStorage** key: `mycustomai-wizard-state`
+- **localStorage** key: `customizedai-wizard-state`
 - Persisted: answers, selected models, uploaded content, current step
 - Not persisted: generation state, streaming content (unless complete)
 

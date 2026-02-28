@@ -155,7 +155,7 @@ export function Wizard() {
           </a>
           <span className="text-xs mx-3" style={{ color: 'var(--ink)', opacity: 0.5 }}>·</span>
           <span className="text-xs" style={{ color: 'var(--ink)', opacity: 0.7 }}>
-            &copy; 2026 MyCustomAI
+            &copy; 2026 CustomizedAI
           </span>
           <span className="text-xs mx-3" style={{ color: 'var(--ink)', opacity: 0.5 }}>·</span>
           <button

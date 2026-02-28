@@ -17,23 +17,23 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MyCustomAI | Custom Instructions for Every AI",
+  title: "CustomizedAI | Custom Instructions for Every AI",
   description: "Create perfect custom instructions for ChatGPT, Claude, Gemini, and Perplexity — tailored to each platform's exact settings. Answer a few questions, get copy-paste ready instructions.",
   keywords: ["custom instructions", "AI settings", "ChatGPT", "Claude", "Gemini", "Perplexity", "AI personalization", "AI customization"],
-  authors: [{ name: "MyCustomAI" }],
-  creator: "MyCustomAI",
+  authors: [{ name: "CustomizedAI" }],
+  creator: "CustomizedAI",
   icons: {
     icon: "/favicon.svg",
     apple: "/favicon.svg",
   },
   openGraph: {
-    title: "MyCustomAI | Custom Instructions for Every AI",
+    title: "CustomizedAI | Custom Instructions for Every AI",
     description: "Create perfect custom instructions for ChatGPT, Claude, Gemini, and Perplexity — tailored to each platform's exact settings.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "MyCustomAI | Custom Instructions for Every AI",
+    title: "CustomizedAI | Custom Instructions for Every AI",
     description: "Create perfect custom instructions for ChatGPT, Claude, Gemini, and Perplexity.",
   },
 };

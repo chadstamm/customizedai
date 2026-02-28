@@ -23,7 +23,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('[MyCustomAI] Unhandled error:', error, errorInfo);
+    console.error('[CustomizedAI] Unhandled error:', error, errorInfo);
   }
 
   handleReset = () => {

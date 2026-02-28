@@ -4,7 +4,7 @@ import React, { createContext, useContext, useReducer, useCallback, useEffect, u
 import { WizardState, WizardAnswer, AnalyzedInsight, GenerationPhase } from '@/types/wizard';
 import { AIModelId, GenerationResult } from '@/types/models';
 
-const STORAGE_KEY = 'mycustomai-wizard-state';
+const STORAGE_KEY = 'customizedai-wizard-state';
 
 // Initial state
 const initialState: WizardState = {
