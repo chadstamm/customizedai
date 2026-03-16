@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useWizard } from '@/context/WizardContext';
 import { AI_MODELS, MODEL_FIELDS } from '@/data/models';
 import { AIModelId } from '@/types/models';
+import { getModelLogo } from '@/components/ui/ModelLogos';
 
 export function ModelSelectionStep() {
   const { state, toggleModel, nextStep, prevStep } = useWizard();
@@ -76,12 +77,12 @@ export function ModelSelectionStep() {
               >
                 {/* Top row: avatar + checkbox */}
                 <div className="flex items-start justify-between mb-3 sm:mb-4">
-                  {/* Model initial circle */}
+                  {/* Model logo */}
                   <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold font-body flex-shrink-0"
-                    style={{ backgroundColor: model.color }}
+                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: `${model.color}08` }}
                   >
-                    {model.name.charAt(0)}
+                    {getModelLogo(model.id, 32)}
                   </div>
 
                   {/* Checkbox indicator */}

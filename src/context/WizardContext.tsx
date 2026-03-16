@@ -6,12 +6,27 @@ import { AIModelId, GenerationResult } from '@/types/models';
 
 const STORAGE_KEY = 'customizedai-wizard-state';
 
+// Strip markdown code fences if the model wraps JSON in ```json...```
+function stripCodeFences(text: string): string {
+  let cleaned = text.trim();
+  if (cleaned.startsWith('```json')) {
+    cleaned = cleaned.slice(7);
+  } else if (cleaned.startsWith('```')) {
+    cleaned = cleaned.slice(3);
+  }
+  if (cleaned.endsWith('```')) {
+    cleaned = cleaned.slice(0, -3);
+  }
+  return cleaned.trim();
+}
+
 // Initial state
 const initialState: WizardState = {
   currentStep: 0,
   selectedModels: [],
   writingCodex: null,
   personalConstitution: null,
+  storyBank: null,
   answers: [],
   analyzedInsights: [],
   isComplete: false,
@@ -30,6 +45,7 @@ type WizardAction =
   | { type: 'TOGGLE_MODEL'; payload: AIModelId }
   | { type: 'SET_WRITING_CODEX'; payload: string }
   | { type: 'SET_PERSONAL_CONSTITUTION'; payload: string }
+  | { type: 'SET_STORY_BANK'; payload: string }
   | { type: 'SAVE_ANSWER'; payload: WizardAnswer }
   | { type: 'SET_INSIGHT'; payload: AnalyzedInsight }
   | { type: 'START_GENERATING' }
@@ -66,6 +82,9 @@ function wizardReducer(state: WizardState, action: WizardAction): WizardState {
 
     case 'SET_PERSONAL_CONSTITUTION':
       return { ...state, personalConstitution: action.payload };
+
+    case 'SET_STORY_BANK':
+      return { ...state, storyBank: action.payload };
 
     case 'SAVE_ANSWER': {
       const existingIndex = state.answers.findIndex(a => a.questionId === action.payload.questionId);
@@ -130,6 +149,7 @@ interface WizardContextType {
   // Foundation inputs
   setWritingCodex: (text: string) => void;
   setPersonalConstitution: (text: string) => void;
+  setStoryBank: (text: string) => void;
   // Navigation
   goToStep: (step: number) => void;
   nextStep: () => void;
@@ -184,6 +204,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
         selectedModels: state.selectedModels,
         writingCodex: state.writingCodex,
         personalConstitution: state.personalConstitution,
+        storyBank: state.storyBank,
         answers: state.answers,
         analyzedInsights: state.analyzedInsights,
       };
@@ -273,6 +294,10 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'SET_PERSONAL_CONSTITUTION', payload: text });
   }, []);
 
+  const setStoryBank = useCallback((text: string) => {
+    dispatch({ type: 'SET_STORY_BANK', payload: text });
+  }, []);
+
   // Answers
   const saveAnswer = useCallback((answer: WizardAnswer) => {
     const previousAnswer = stateRef.current.answers.find(a => a.questionId === answer.questionId);
@@ -318,6 +343,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
       selectedModels: current.selectedModels,
       writingCodex: current.writingCodex,
       personalConstitution: current.personalConstitution,
+      storyBank: current.storyBank,
       answers: lightAnswers,
       analyzedInsights: current.analyzedInsights,
     });
@@ -403,7 +429,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
       // Phase 3: Parse the streamed text as GenerationResult
       let result: GenerationResult;
       try {
-        result = JSON.parse(rawText) as GenerationResult;
+        result = JSON.parse(stripCodeFences(rawText)) as GenerationResult;
       } catch {
         throw new Error('Failed to parse generation result. Please try again.');
       }
@@ -427,7 +453,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
 
       let result: GenerationResult;
       try {
-        result = JSON.parse(rawText) as GenerationResult;
+        result = JSON.parse(stripCodeFences(rawText)) as GenerationResult;
       } catch {
         throw new Error('Failed to parse generation result. Please try again.');
       }
@@ -468,6 +494,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     toggleModel,
     setWritingCodex,
     setPersonalConstitution,
+    setStoryBank,
     goToStep,
     nextStep,
     prevStep,

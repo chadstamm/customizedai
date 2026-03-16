@@ -24,7 +24,6 @@ export interface GenerationResult {
     nickname: string;
     occupation: string;
     knowAboutYou: string;
-    howToRespond: string;
     personality: string;
     personalityReasoning: string;
     warm: 'More' | 'Default' | 'Less';
@@ -32,9 +31,13 @@ export interface GenerationResult {
     headersAndLists: 'More' | 'Default' | 'Less';
     emoji: 'More' | 'Default' | 'Less';
     characteristicsReasoning: string;
+    customInstructions: string;
   };
   claude?: {
-    profilePreferences: string;
+    fullName: string;
+    callYou: string;
+    workDescription: string;
+    personalPreferences: string;
     recommendedStyle: string;
     styleReasoning: string;
     customStyleGuidance?: string;
@@ -43,7 +46,9 @@ export interface GenerationResult {
     instructions: string;
   };
   perplexity?: {
-    bio: string;
-    preferredLanguage: string;
+    occupation: string;
+    customInstructions: string;
+    responseLength: 'More' | 'Default' | 'Less';
+    headersAndLists: 'More' | 'Default' | 'Less';
   };
 }

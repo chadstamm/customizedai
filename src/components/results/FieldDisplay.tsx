@@ -47,7 +47,7 @@ export function FieldDisplay({ fieldSpec, value, reasoning }: FieldDisplayProps)
 
         <div className="relative">
           <div
-            className="w-full rounded-xl p-4 text-sm leading-relaxed whitespace-pre-wrap"
+            className="w-full rounded-xl p-4 pr-20 text-sm leading-relaxed whitespace-pre-wrap"
             style={{
               background: 'var(--bg-card)',
               border: '1px solid var(--border)',
@@ -61,7 +61,10 @@ export function FieldDisplay({ fieldSpec, value, reasoning }: FieldDisplayProps)
           </div>
 
           {/* Copy button in top-right corner */}
-          <div className="absolute top-2 right-2">
+          <div
+            className="absolute top-2 right-2 rounded-lg"
+            style={{ background: 'var(--bg-card)' }}
+          >
             <CopyButton text={value} />
           </div>
         </div>
@@ -131,6 +134,15 @@ export function FieldDisplay({ fieldSpec, value, reasoning }: FieldDisplayProps)
               </span>
             );
           })}
+          {/* Show value as its own pill if it doesn't match any option */}
+          {value && !(options || []).includes(value) && (
+            <span
+              className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium"
+              style={{ background: 'var(--primary)', color: '#FFFFFF' }}
+            >
+              {value}
+            </span>
+          )}
           <CopyButton text={value} />
         </div>
 

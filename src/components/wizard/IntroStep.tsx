@@ -1,8 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useWizard } from '@/context/WizardContext';
+import { AnimatedHeroIcon } from '@/components/ui/AnimatedHeroIcon';
 
 // Model chip data with brand colors
 const modelChips = [
@@ -125,18 +125,26 @@ export function IntroStep() {
           initial="hidden"
           animate="visible"
         >
+          {/* Animated hero icon */}
+          <motion.div
+            variants={fadeUpItem}
+            className="mb-6 sm:mb-8"
+          >
+            <AnimatedHeroIcon size={140} />
+          </motion.div>
+
           {/* Headline */}
           <motion.h1
             variants={fadeUpItem}
-            className="font-display font-bold text-white tracking-tight leading-[1.05]"
+            className="font-body font-bold text-white tracking-tight leading-[1.1]"
             style={{
-              fontSize: 'clamp(2.5rem, 7vw, 5rem)',
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
               letterSpacing: '-0.02em',
             }}
           >
-            Every AI Should Know{' '}
+            Set Up Your
+            <br />
             <span
-              className="italic"
               style={{
                 background: 'linear-gradient(135deg, var(--primary-light), var(--accent-light))',
                 WebkitBackgroundClip: 'text',
@@ -144,8 +152,10 @@ export function IntroStep() {
                 backgroundClip: 'text',
               }}
             >
-              You
+              Custom Instructions
             </span>
+            <br />
+            for Every AI
           </motion.h1>
 
           {/* Subheadline — StoryBrand: lead with problem, then solution */}
@@ -154,23 +164,8 @@ export function IntroStep() {
             className="mt-6 sm:mt-8 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
             style={{ color: 'rgba(255, 255, 255, 0.65)' }}
           >
-            You use AI every day, but it still treats you like a stranger. Answer a few questions and we&apos;ll generate custom instructions for ChatGPT, Claude, Gemini, and Perplexity &mdash; mapped to each platform&apos;s exact settings.
+            Every AI platform has a place for custom instructions, but figuring out what to put there is the hard part. Answer a few questions and we&apos;ll generate yours for ChatGPT, Claude, Gemini, and Perplexity, tailored to each platform&apos;s exact fields.
           </motion.p>
-
-          {/* Hero illustration */}
-          <motion.div
-            variants={fadeUpItem}
-            className="mt-8 sm:mt-10 max-w-3xl mx-auto"
-          >
-            <Image
-              src="/hero-illustration.png"
-              alt="AI inputs flowing through a personalization funnel into customized instructions"
-              width={1200}
-              height={600}
-              className="w-full h-auto rounded-xl opacity-90"
-              priority
-            />
-          </motion.div>
 
           {/* Model chips */}
           <motion.div
@@ -207,7 +202,7 @@ export function IntroStep() {
               onClick={nextStep}
               whileHover={{ scale: 1.03, boxShadow: '0 0 40px rgba(79, 70, 229, 0.35)' }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2.5 font-body font-semibold text-sm sm:text-base tracking-wide px-8 sm:px-10 py-4 sm:py-5 rounded-xl cursor-pointer transition-colors duration-200"
+              className="inline-flex items-center gap-2.5 font-body font-semibold text-sm sm:text-base tracking-widest uppercase px-8 sm:px-10 py-4 sm:py-5 rounded-xl cursor-pointer transition-colors duration-200"
               style={{
                 background: 'var(--primary)',
                 color: '#FFFFFF',
@@ -400,21 +395,21 @@ export function IntroStep() {
             className="font-display text-xl sm:text-2xl md:text-3xl font-light leading-snug mb-10"
             style={{ color: 'rgba(255, 255, 255, 0.85)' }}
           >
-            Stop re-explaining yourself to every AI.{' '}
+            Every AI you use has a place for custom instructions.{' '}
             <span
               className="italic font-normal"
               style={{ color: 'var(--accent-light)' }}
             >
-              Build your instructions once
+              Set them up once
             </span>{' '}
-            and every conversation starts like it already knows you.
+            and stop re-explaining yourself in every conversation.
           </p>
 
           <motion.button
             onClick={nextStep}
             whileHover={{ scale: 1.03, boxShadow: '0 0 40px rgba(79, 70, 229, 0.35)' }}
             whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2.5 font-body font-semibold text-sm sm:text-base tracking-wide px-8 sm:px-10 py-4 sm:py-5 rounded-xl cursor-pointer transition-colors duration-200"
+            className="inline-flex items-center gap-2.5 font-body font-semibold text-sm sm:text-base tracking-widest uppercase px-8 sm:px-10 py-4 sm:py-5 rounded-xl cursor-pointer transition-colors duration-200"
             style={{
               background: '#FFFFFF',
               color: 'var(--bg-dark)',

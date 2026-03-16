@@ -20,6 +20,7 @@ export interface WizardState {
   selectedModels: AIModelId[];
   writingCodex: string | null;
   personalConstitution: string | null;
+  storyBank: string | null;
   answers: WizardAnswer[];
   analyzedInsights: AnalyzedInsight[];
   isComplete: boolean;

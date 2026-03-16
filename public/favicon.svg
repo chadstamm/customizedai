@@ -1,5 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
   <rect width="32" height="32" rx="8" fill="#4F46E5"/>
-  <path d="M16 6L24 14L16 26L8 14L16 6Z" fill="white" opacity="0.9"/>
-  <path d="M8 14H24L16 26L8 14Z" fill="white" opacity="0.7"/>
+  <!-- Simplified user + sparkle icon representing AI personalization -->
+  <!-- User circle -->
+  <circle cx="16" cy="12" r="4" fill="white" opacity="0.95"/>
+  <!-- User body arc -->
+  <path d="M9 24c0-3.866 3.134-7 7-7s7 3.134 7 7" fill="white" opacity="0.85"/>
+  <!-- AI sparkle accent (top-right) -->
+  <path d="M24 4l.8 1.6L26.4 6.4l-1.6.8L24 8.8l-.8-1.6-1.6-.8 1.6-.8z" fill="#06B6D4"/>
+  <!-- Small sparkle (bottom-left) -->
+  <path d="M7 22l.5 1 1 .5-1 .5-.5 1-.5-1-1-.5 1-.5z" fill="#06B6D4" opacity="0.7"/>
 </svg>

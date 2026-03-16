@@ -18,12 +18,12 @@ export function QuestionStep() {
     generateInstructions,
   } = useWizard();
 
-  // Local component state
+  // Local component state — initialize questionNumber from existing answers on resume
   const [currentQuestion, setCurrentQuestion] = useState<AIGeneratedQuestion | null>(null);
   const [isLoadingQuestion, setIsLoadingQuestion] = useState(true);
   const [currentAnswer, setCurrentAnswer] = useState('');
   const [multiSelectAnswers, setMultiSelectAnswers] = useState<string[]>([]);
-  const [questionNumber, setQuestionNumber] = useState(1);
+  const [questionNumber, setQuestionNumber] = useState(() => state.answers.length + 1);
   const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
   const [fetchError, setFetchError] = useState<string | null>(null);
 
@@ -112,8 +112,13 @@ export function QuestionStep() {
   }, [state.selectedModels, state.writingCodex, state.personalConstitution, buildPreviousAnswers, generateInstructions, getAnswer]);
 
   // Fetch question on mount and when questionNumber changes
+  // If past the 15-question cap (e.g. resuming a completed session), go straight to generation
   useEffect(() => {
-    fetchNextQuestion();
+    if (questionNumber > 15) {
+      generateInstructions();
+    } else {
+      fetchNextQuestion();
+    }
   }, [questionNumber]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Auto-focus textarea when question loads
@@ -367,44 +372,43 @@ export function QuestionStep() {
                   {/* Textarea input (default) */}
                   {currentQuestion.inputType !== 'multiselect' && (
                     <>
-                      <div className="relative">
-                        <textarea
-                          ref={textareaRef}
-                          value={currentAnswer + (interimTranscript ? (currentAnswer ? ' ' : '') + interimTranscript : '')}
-                          onChange={(e) => {
-                            const newValue = e.target.value;
-                            if (!interimTranscript) {
-                              setCurrentAnswer(newValue);
-                            } else {
-                              // Extract just the permanent part when interim transcript is active
-                              const interimLength = interimTranscript.length + (currentAnswer ? 1 : 0);
-                              const permanentPart = newValue.slice(0, newValue.length - interimLength);
-                              setCurrentAnswer(permanentPart);
-                            }
-                          }}
-                          onKeyDown={handleKeyDown}
-                          placeholder="Share your thoughts..."
-                          rows={5}
-                          maxLength={MAX_ANSWER_LENGTH}
-                          className="textarea-clean"
-                        />
+                      <textarea
+                        ref={textareaRef}
+                        value={currentAnswer + (interimTranscript ? (currentAnswer ? ' ' : '') + interimTranscript : '')}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (!interimTranscript) {
+                            setCurrentAnswer(newValue);
+                          } else {
+                            const interimLength = interimTranscript.length + (currentAnswer ? 1 : 0);
+                            const permanentPart = newValue.slice(0, newValue.length - interimLength);
+                            setCurrentAnswer(permanentPart);
+                          }
+                        }}
+                        onKeyDown={handleKeyDown}
+                        placeholder="Share your thoughts..."
+                        rows={5}
+                        maxLength={MAX_ANSWER_LENGTH}
+                        className="textarea-clean"
+                      />
 
-                        {/* Voice input button */}
-                        {voiceSupported && (
+                      {/* Voice input button — below the textarea */}
+                      {voiceSupported && (
+                        <div className="flex items-center gap-2 mt-3">
                           <motion.button
                             onClick={toggleListening}
-                            className={`btn-voice absolute top-3 right-3 ${isListening ? 'recording voice-pulse' : ''}`}
-                            style={{ width: 48, height: 48 }}
+                            className={`btn-voice ${isListening ? 'recording voice-pulse' : ''}`}
+                            style={{ width: 40, height: 40 }}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             title={isListening ? 'Stop recording' : 'Start voice input'}
                           >
                             {isListening ? (
-                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                 <rect x="6" y="6" width="12" height="12" rx="2" />
                               </svg>
                             ) : (
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
@@ -414,8 +418,11 @@ export function QuestionStep() {
                               </svg>
                             )}
                           </motion.button>
-                        )}
-                      </div>
+                          <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                            {isListening ? 'Tap to stop' : 'Voice input'}
+                          </span>
+                        </div>
+                      )}
 
                       {/* Interim transcript indicator */}
                       {isListening && interimTranscript && (
@@ -529,6 +536,33 @@ export function QuestionStep() {
             >
               Skip
             </button>
+
+            {/* Generate Now — available after 5+ questions answered */}
+            {state.answers.length >= 5 && (
+              <button
+                onClick={() => {
+                  // Save current answer first if present
+                  if (currentQuestion) {
+                    const answerValue = currentQuestion.inputType === 'multiselect'
+                      ? multiSelectAnswers.join(', ')
+                      : currentAnswer.trim();
+                    if (answerValue) {
+                      saveAnswer({
+                        questionId: `q-${questionNumber}`,
+                        question: currentQuestion.question,
+                        answer: answerValue,
+                        timestamp: Date.now(),
+                      });
+                    }
+                  }
+                  generateInstructions();
+                }}
+                className="btn-ghost"
+                style={{ color: 'var(--accent)' }}
+              >
+                Generate Now
+              </button>
+            )}
 
             {/* Next */}
             <motion.button

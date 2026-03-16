@@ -45,6 +45,26 @@ function ScrollIcon({ className, style }: { className?: string; style?: React.CS
   );
 }
 
+function BookIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
+  return (
+    <svg
+      className={className}
+      style={style}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+      <line x1="8" y1="7" x2="16" y2="7" />
+      <line x1="8" y1="11" x2="13" y2="11" />
+    </svg>
+  );
+}
+
 function UploadIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg
@@ -239,10 +259,11 @@ const cardVariants = {
 // ── Main Component ──────────────────────────────────────────────────
 
 export function FoundationStep() {
-  const { state, setWritingCodex, setPersonalConstitution, nextStep, prevStep } = useWizard();
+  const { state, setWritingCodex, setPersonalConstitution, setStoryBank, nextStep, prevStep } = useWizard();
 
   const writingCodex = state.writingCodex ?? '';
   const personalConstitution = state.personalConstitution ?? '';
+  const storyBank = state.storyBank ?? '';
 
   return (
     <motion.div
@@ -270,14 +291,14 @@ export function FoundationStep() {
             className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
             style={{ color: 'var(--muted)' }}
           >
-            If you have a Writing Codex or Personal Constitution, paste or upload
-            them here. They&apos;ll make your custom instructions even more
-            accurate.
+            If you have a Writing Codex, Personal Constitution, or Story Bank,
+            paste or upload them here. They&apos;ll make your custom instructions
+            even more accurate.
           </p>
         </motion.div>
 
         {/* ── Two cards: side-by-side on desktop, stacked on mobile ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 mb-10 sm:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 mb-10 sm:mb-12">
           {/* Card 1 — Writing Codex */}
           <motion.div
             className="rounded-2xl p-6 sm:p-7"
@@ -402,6 +423,70 @@ export function FoundationStep() {
                 className="link-accent"
               >
                 Create yours at We The Me &rarr;
+              </a>
+            </p>
+          </motion.div>
+
+          {/* Card 3 — Story Bank */}
+          <motion.div
+            className="rounded-2xl p-6 sm:p-7"
+            style={{
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border)',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
+            }}
+            custom={2}
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {/* Icon */}
+            <div
+              className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+              style={{ background: 'rgba(245, 158, 11, 0.08)' }}
+            >
+              <BookIcon className="w-5 h-5" style={{ color: '#f59e0b' }} />
+            </div>
+
+            {/* Title + description */}
+            <h3
+              className="font-body text-lg font-bold mb-1"
+              style={{ color: 'var(--ink)' }}
+            >
+              Story Bank
+            </h3>
+            <p
+              className="text-sm mb-4"
+              style={{ color: 'var(--muted)' }}
+            >
+              Your personal stories, experiences, and narrative patterns
+            </p>
+
+            {/* Textarea */}
+            <textarea
+              rows={6}
+              className="textarea-clean"
+              placeholder="Paste your story bank here..."
+              value={storyBank}
+              onChange={(e) => setStoryBank(e.target.value)}
+            />
+
+            {/* File upload */}
+            <FileDropZone
+              id="storybank-file-upload"
+              onTextExtracted={(text) => setStoryBank(text)}
+            />
+
+            {/* Cross-promo link */}
+            <p className="text-sm mt-4">
+              Don&apos;t have one?{' '}
+              <a
+                href="https://story-archive.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-accent"
+              >
+                Build yours at Story Archive &rarr;
               </a>
             </p>
           </motion.div>

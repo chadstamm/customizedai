@@ -26,15 +26,18 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
     apple: "/favicon.svg",
   },
+  metadataBase: new URL("https://customizedai.app"),
   openGraph: {
     title: "CustomizedAI | Custom Instructions for Every AI",
-    description: "Create perfect custom instructions for ChatGPT, Claude, Gemini, and Perplexity — tailored to each platform's exact settings.",
+    description: "Answer a few questions, get copy-paste ready instructions for ChatGPT, Claude, Gemini, and Perplexity — tailored to each platform's exact fields.",
     type: "website",
+    url: "https://customizedai.app",
+    siteName: "CustomizedAI",
   },
   twitter: {
     card: "summary_large_image",
     title: "CustomizedAI | Custom Instructions for Every AI",
-    description: "Create perfect custom instructions for ChatGPT, Claude, Gemini, and Perplexity.",
+    description: "Set up your custom instructions for every AI. Free, no sign-up required.",
   },
 };
 

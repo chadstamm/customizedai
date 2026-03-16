@@ -14,6 +14,7 @@ interface GenerateRequest {
   analyzedInsights: AnalyzedInsight[];
   writingCodex: string | null;
   personalConstitution: string | null;
+  storyBank: string | null;
 }
 
 function buildSystemPrompt(selectedModels: AIModelId[]): string {
@@ -66,20 +67,23 @@ The JSON must match this exact schema:
       prompt += `## ChatGPT Fields:
 - "nickname": A short name or nickname for the user (string)
 - "occupation": Their job title/role (string)
-- "knowAboutYou": What ChatGPT should know about the user. MAX 1500 CHARACTERS. Include their role, expertise, interests, communication preferences, and key context. (string)
-- "howToRespond": How ChatGPT should respond. MAX 1500 CHARACTERS. Include tone, format preferences, level of detail, and specific behavioral instructions. (string)
-- "personality": One of: "Default", "Professional", "Friendly", "Candid", "Quirky", "Efficient", "Nerdy", "Cynical" — pick the best match based on user preferences (string)
-- "personalityReasoning": Brief explanation of why this personality was chosen (string)
+- "knowAboutYou": For "More about you" field. MAX 1500 CHARACTERS. Include their role, expertise, interests, communication preferences, and key context about who they are. (string)
+- "personality": One of: "Default" (Preset style and tone), "Professional" (Polished and precise), "Friendly" (Warm and chatty), "Candid" (Direct and encouraging), "Quirky" (Playful and imaginative), "Efficient" (Concise and plain), "Nerdy" (Exploratory and enthusiastic), "Cynical" (Critical and sarcastic) — pick the best match for "Base style and tone" (string)
+- "personalityReasoning": Brief explanation of why this style was chosen (string)
 - "warm": "More", "Default", or "Less" — based on how warm/friendly they want responses (string)
 - "enthusiastic": "More", "Default", or "Less" — based on energy level preference (string)
 - "headersAndLists": "More", "Default", or "Less" — based on formatting preferences (string)
 - "emoji": "More", "Default", or "Less" — based on emoji preferences (string)
-- "characteristicsReasoning": Brief explanation of characteristic choices (string)`;
+- "characteristicsReasoning": Brief explanation of characteristic choices (string)
+- "customInstructions": For "Custom instructions" field. MAX 1500 CHARACTERS. Include tone, format preferences, level of detail, behavioral instructions, and how ChatGPT should respond. (string)`;
     }
 
     if (modelId === 'claude') {
       prompt += `## Claude Fields:
-- "profilePreferences": A comprehensive text for Claude's Profile Preferences. Include who the user is, what they do, how they want Claude to communicate, their preferences for detail/format, and any standing instructions. Be thorough — this is a single freeform text area. (string)
+- "fullName": The user's full name (string)
+- "callYou": What Claude should call them — typically their first name or nickname (string)
+- "workDescription": One of: "Product management", "Engineering", "Human resources", "Finance", "Marketing", "Sales", "Operations", "Data science", "Design", "Legal", "Other" — best match for their work (string)
+- "personalPreferences": Comprehensive text for "What personal preferences should Claude consider in responses?" Include who they are, what they do, how they want Claude to communicate, preferences for detail/format, standing instructions, tone by context, and behavioral rules. Be thorough. (string)
 - "recommendedStyle": One of: "Normal", "Concise", "Explanatory", "Formal" — best match for user (string)
 - "styleReasoning": Brief explanation of why this style was chosen (string)
 - "customStyleGuidance": If none of the presets perfectly fit, provide specific guidance for creating a custom style in Claude (string, optional)`;
@@ -92,8 +96,10 @@ The JSON must match this exact schema:
 
     if (modelId === 'perplexity') {
       prompt += `## Perplexity Fields:
-- "bio": A comprehensive bio for Perplexity's AI Profile. Include role, interests, values, preferred communication style, goals, and format preferences. (string)
-- "preferredLanguage": Preferred response language, typically "English" unless user indicates otherwise (string)`;
+- "occupation": Their job title/role for the "Your occupation" field (string)
+- "customInstructions": For the "Custom instructions" field. Include preferences, interests, communication style, and how Perplexity should respond. (string)
+- "responseLength": "More", "Default", or "Less" — how long responses should be (string)
+- "headersAndLists": "Lists", "Default", or "Paragraphs" — Lists = prefer bulleted lists, Default = mix of paragraphs and lists, Paragraphs = prefer paragraph format (string)`;
     }
   }
 
@@ -101,18 +107,45 @@ The JSON must match this exact schema:
 
 Guidelines:
 - Make each model's content feel native to that platform's style
-- ChatGPT's two textareas (knowAboutYou and howToRespond) must each be UNDER 1500 characters
+- ChatGPT's two textareas (knowAboutYou and customInstructions) must each be UNDER 1500 characters
 - Be specific and actionable, not generic
 - Use the user's actual words and examples from their answers where possible
 - If they provided a writing codex, incorporate their voice preferences
 - If they provided a personal constitution, reflect their values and principles
-- Don't repeat the same content verbatim across models — tailor for each`;
+- If they provided a story bank, weave in their personal narratives and experiences to make instructions feel grounded in lived experience
+- Don't repeat the same content verbatim across models — tailor for each
+
+CRITICAL — OUTPUT QUALITY:
+The generated custom instructions must be structured around INTERACTION BEHAVIORS, not just surface preferences. Each instruction should be a clear, named directive the user can scan and understand.
+
+For textarea fields (Claude's personalPreferences, ChatGPT's customInstructions, Gemini's instructions, Perplexity's customInstructions), structure the output as behavioral rules with clear labels. Example format:
+
+"One Step at a Time:
+Guide me through complex ideas or workflows in sequential order. Handle one decision or deliverable before suggesting the next.
+
+Ask Before You Assume:
+If anything is unclear, ask a precise clarifying question before drafting. Don't guess or fill in blanks.
+
+Balance Insight with Action:
+Pair every piece of strategy or creativity with a concrete next step or option. Help me move forward, not just think."
+
+Each behavioral rule should:
+- Have a short, memorable label (2-5 words)
+- Include 1-2 sentences explaining the behavior
+- Be derived from what the user actually said in their answers
+- Cover interaction style, tone preferences, format expectations, and pet peeves
+
+Do NOT generate generic instructions like "Be helpful and clear." Every instruction should feel personal and specific to THIS user.
+
+If the user wants AI to challenge them, include explicit instructions about pushback, honesty, and flagging weak thinking.
+If the user wants questions one at a time, include that as a behavioral rule.
+If the user has contextual tone shifts, map those out explicitly.`;
 
   return prompt;
 }
 
 function buildUserPrompt(data: GenerateRequest): string {
-  const { selectedModels, answers, analyzedInsights, writingCodex, personalConstitution } = data;
+  const { selectedModels, answers, analyzedInsights, writingCodex, personalConstitution, storyBank } = data;
   const completedInsights = (analyzedInsights || []).filter(i => i.status === 'complete');
 
   let prompt = `Based on everything I've shared, generate my custom instructions.\n\n`;
@@ -144,6 +177,13 @@ function buildUserPrompt(data: GenerateRequest): string {
       ? personalConstitution.slice(0, 4000) + '\n[... truncated]'
       : personalConstitution;
     prompt += `\nMy Personal Constitution:\n${truncated}\n`;
+  }
+
+  if (storyBank) {
+    const truncated = storyBank.length > 4000
+      ? storyBank.slice(0, 4000) + '\n[... truncated]'
+      : storyBank;
+    prompt += `\nMy Story Bank:\n${truncated}\n`;
   }
 
   return prompt;
