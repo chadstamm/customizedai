@@ -302,7 +302,7 @@ export function Wizard() {
                         WriteLikeMe &mdash; Create your AI writing voice codex
                       </a>
                       <a
-                        href="https://we-the-me.vercel.app"
+                        href="https://wethe.me"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="link-accent text-sm"

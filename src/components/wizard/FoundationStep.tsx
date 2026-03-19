@@ -417,7 +417,7 @@ export function FoundationStep() {
             <p className="text-sm mt-4">
               Don&apos;t have one?{' '}
               <a
-                href="https://we-the-me.vercel.app"
+                href="https://wethe.me"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="link-accent"
@@ -481,7 +481,7 @@ export function FoundationStep() {
             <p className="text-sm mt-4">
               Don&apos;t have one?{' '}
               <a
-                href="https://story-archive.vercel.app"
+                href="https://storyarchive.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="link-accent"
