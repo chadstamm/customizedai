@@ -146,11 +146,20 @@ export const MODEL_FIELDS: Record<AIModelId, ModelFieldSpec[]> = {
   ],
   gemini: [
     {
+      id: 'savedInfo',
+      label: 'Saved Info',
+      type: 'textarea',
+      placeholder: 'Personal facts and preferences for Gemini...',
+      helpText: 'Add each line as a separate item in Settings → Personal Intelligence → Saved Info',
+      navigationPath: 'Settings → Personal Intelligence → Saved Info',
+    },
+    {
       id: 'instructions',
       label: 'Instructions for Gemini',
       type: 'textarea',
-      placeholder: 'Standing instructions applied to every chat...',
-      navigationPath: 'Settings & help → Personal Intelligence → Instructions for Gemini',
+      placeholder: 'Behavioral and response directives for Gemini...',
+      helpText: 'How Gemini should respond — tone, format, style rules, and communication preferences',
+      navigationPath: 'Settings → Personal Intelligence → Instructions for Gemini',
     },
   ],
   perplexity: [

@@ -91,7 +91,8 @@ The JSON must match this exact schema:
 
     if (modelId === 'gemini') {
       prompt += `## Gemini Fields:
-- "instructions": A comprehensive text for Gemini's "Instructions for Gemini" field. Include standing instructions about communication style, format preferences, tone, and any specific rules to always follow. (string)`;
+- "savedInfo": A list of discrete personal facts, preferences, and context about the user — one per line. These will be added individually to Gemini's Saved Info feature. Include: name, role, key skills, preferences, important context. Format as a bulleted list where each bullet is one standalone fact. Do NOT include behavioral directives here — only factual statements about the user. (string)
+- "instructions": Behavioral directives for Gemini's "Instructions for Gemini" field. Focus ONLY on how Gemini should respond — tone, format, style rules, communication preferences. Do NOT include personal facts here (those go in Saved Info). Structure as named behavioral rules like the other models. (string)`;
     }
 
     if (modelId === 'perplexity') {
@@ -118,7 +119,7 @@ Guidelines:
 CRITICAL — OUTPUT QUALITY:
 The generated custom instructions must be structured around INTERACTION BEHAVIORS, not just surface preferences. Each instruction should be a clear, named directive the user can scan and understand.
 
-For textarea fields (Claude's personalPreferences, ChatGPT's customInstructions, Gemini's instructions, Perplexity's customInstructions), structure the output as behavioral rules with clear labels. Example format:
+For textarea fields (Claude's personalPreferences, ChatGPT's customInstructions, Gemini's instructions, Perplexity's customInstructions), structure the output as behavioral rules with clear labels. Exception: Gemini's savedInfo should be a bulleted list of standalone personal facts, NOT behavioral rules. Example format for behavioral rules:
 
 "One Step at a Time:
 Guide me through complex ideas or workflows in sequential order. Handle one decision or deliverable before suggesting the next.
@@ -191,7 +192,24 @@ function buildUserPrompt(data: GenerateRequest): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const data: GenerateRequest = await request.json();
+    // Validate total request body size (500KB limit)
+    const contentLength = request.headers.get('content-length');
+    if (contentLength && parseInt(contentLength, 10) > 500 * 1024) {
+      return NextResponse.json(
+        { error: 'Request body too large. Maximum size is 500KB.' },
+        { status: 400 }
+      );
+    }
+
+    const rawBody = await request.text();
+    if (rawBody.length > 500 * 1024) {
+      return NextResponse.json(
+        { error: 'Request body too large. Maximum size is 500KB.' },
+        { status: 400 }
+      );
+    }
+
+    const data: GenerateRequest = JSON.parse(rawBody);
 
     // Validate the request
     if (!data.selectedModels || data.selectedModels.length === 0) {

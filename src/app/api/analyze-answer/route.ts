@@ -11,6 +11,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing question or answer' }, { status: 400 });
     }
 
+    // Validate answer length
+    if (typeof answer === 'string' && answer.length > 10_000) {
+      return NextResponse.json(
+        { error: 'Answer exceeds 10,000 character limit.' },
+        { status: 400 }
+      );
+    }
+
     const response = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 1000,

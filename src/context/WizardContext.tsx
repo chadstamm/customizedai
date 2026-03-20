@@ -317,10 +317,17 @@ export function WizardProvider({ children }: { children: ReactNode }) {
 
   // Wait for all in-flight background analyses to complete
   const waitForPendingInsights = useCallback(async () => {
+    const MAX_ITERATIONS = 60; // 60 × 500ms = 30 seconds
+    let iterations = 0;
     while (true) {
       const current = stateRef.current;
       const pending = current.analyzedInsights.filter(i => i.status === 'analyzing');
       if (pending.length === 0) break;
+      iterations++;
+      if (iterations >= MAX_ITERATIONS) {
+        console.warn(`[CustomizedAI] Timed out waiting for ${pending.length} pending insight(s) after 30s. Proceeding with generation.`);
+        break;
+      }
       await new Promise(resolve => setTimeout(resolve, 500));
     }
   }, []);

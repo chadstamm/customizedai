@@ -44,17 +44,17 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           <div
             className="max-w-md w-full rounded-2xl p-8 text-center"
             style={{
-              background: 'var(--surface)',
+              background: 'var(--bg-card)',
               border: '1px solid var(--border)',
             }}
           >
             <div
               className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5"
-              style={{ background: 'var(--danger)', opacity: 0.15 }}
+              style={{ background: 'var(--error)', opacity: 0.15 }}
             >
               <svg
                 className="w-7 h-7"
-                style={{ color: 'var(--danger)' }}
+                style={{ color: 'var(--error)' }}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -120,7 +120,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 onClick={() => window.location.reload()}
                 className="px-5 py-2.5 text-sm font-medium rounded-xl transition-all hover:scale-105"
                 style={{
-                  background: 'var(--surface)',
+                  background: 'var(--bg-card)',
                   color: 'var(--ink)',
                   border: '1px solid var(--border)',
                 }}

@@ -202,17 +202,17 @@ export function Wizard() {
           >
             About
           </button>
+          <span className="text-xs mx-3" style={{ color: 'var(--ink)', opacity: 0.5 }}>·</span>
+          <a
+            href="/privacy"
+            className="text-xs link-accent"
+          >
+            Privacy Policy
+          </a>
         </div>
         <div className="text-xs" style={{ color: 'var(--ink)', opacity: 0.5 }}>
           Powered by{' '}
-          <a
-            href="https://chadstamm.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link-accent"
-          >
-            Chad Stamm
-          </a>
+          <a href="https://chadstamm.com/" target="_blank" rel="noopener noreferrer" className="link-accent">Chad Stamm</a>
           {' & '}
           <a
             href="https://tmcdigitalmedia.com/"
@@ -276,9 +276,7 @@ export function Wizard() {
                   </p>
                   <p>
                     Built by{' '}
-                    <a href="https://chadstamm.com/" target="_blank" rel="noopener noreferrer" className="link-accent font-medium">
-                      Chad Stamm
-                    </a>
+                    <a href="https://chadstamm.com/" target="_blank" rel="noopener noreferrer" className="link-accent font-medium">Chad Stamm</a>
                     {' & '}
                     <a href="https://tmcdigitalmedia.com/" target="_blank" rel="noopener noreferrer" className="link-accent font-medium">
                       TMC Digital Media

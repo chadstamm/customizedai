@@ -43,6 +43,7 @@ export interface GenerationResult {
     customStyleGuidance?: string;
   };
   gemini?: {
+    savedInfo: string;
     instructions: string;
   };
   perplexity?: {

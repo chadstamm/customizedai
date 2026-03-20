@@ -117,15 +117,14 @@ export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInput
     recognition.lang = language;
 
     recognition.onaudiostart = () => {
-      console.log('Audio capture started');
+      // audio capture started
     };
 
     recognition.onspeechstart = () => {
-      console.log('Speech detected');
+      // speech detected
     };
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
-      console.log('Got result:', event.results);
       let finalTranscript = '';
       let interim = '';
 
@@ -137,8 +136,6 @@ export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInput
           interim += result[0].transcript;
         }
       }
-
-      console.log('Final:', finalTranscript, 'Interim:', interim);
 
       if (finalTranscript) {
         // Call the callback with just the new transcript
@@ -156,11 +153,9 @@ export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInput
     };
 
     recognition.onend = () => {
-      console.log('Recognition ended, isListening:', isListeningRef.current);
       // Restart if we're still supposed to be listening (continuous mode)
       if (isListeningRef.current && continuous) {
         try {
-          console.log('Restarting recognition');
           recognition.start();
         } catch (e) {
           console.warn('Could not restart:', e);
@@ -190,7 +185,6 @@ export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInput
     setInterimTranscript('');
 
     try {
-      console.log('Starting recognition');
       recognitionRef.current.start();
       setIsListening(true);
       isListeningRef.current = true;
@@ -200,7 +194,6 @@ export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInput
   }, []);
 
   const stopListening = useCallback(() => {
-    console.log('Stopping recognition');
     if (recognitionRef.current) {
       isListeningRef.current = false;
       recognitionRef.current.stop();

@@ -179,6 +179,28 @@ export async function POST(request: NextRequest): Promise<NextResponse<NextQuest
       questionCount,
     } = body;
 
+    // Validate field lengths
+    if (writingCodex && writingCodex.length > 50_000) {
+      return NextResponse.json(
+        { success: false, error: 'Writing codex exceeds 50,000 character limit.' },
+        { status: 400 },
+      );
+    }
+
+    if (personalConstitution && personalConstitution.length > 50_000) {
+      return NextResponse.json(
+        { success: false, error: 'Personal constitution exceeds 50,000 character limit.' },
+        { status: 400 },
+      );
+    }
+
+    if (previousAnswers && previousAnswers.some(a => a.answer && a.answer.length > 10_000)) {
+      return NextResponse.json(
+        { success: false, error: 'Answer exceeds 10,000 character limit.' },
+        { status: 400 },
+      );
+    }
+
     if (!selectedModels || selectedModels.length === 0) {
       return NextResponse.json(
         { success: false, error: 'No models selected' },
