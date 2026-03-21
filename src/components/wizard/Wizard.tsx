@@ -209,6 +209,16 @@ export function Wizard() {
           >
             Privacy Policy
           </a>
+          <span className="text-xs mx-3" style={{ color: 'var(--ink)', opacity: 0.5 }}>·</span>
+          <a
+            href="https://rumo.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs"
+            style={{ color: 'var(--ink)', opacity: 0.4 }}
+          >
+            Part of the Rumo journey
+          </a>
         </div>
         <div className="text-xs" style={{ color: 'var(--ink)', opacity: 0.5 }}>
           Powered by{' '}

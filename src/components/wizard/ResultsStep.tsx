@@ -149,6 +149,27 @@ export function ResultsStep() {
           </AnimatePresence>
         </div>
 
+        {/* Rumo Next Step */}
+        <motion.div
+          className="mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.6 }}
+        >
+          <a
+            href="https://rumo.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-xl text-sm font-medium font-body transition-all duration-200 hover:opacity-90"
+            style={{ background: '#c4943a', color: '#fff' }}
+          >
+            Explore the Full Journey
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+        </motion.div>
+
         {/* Bottom section */}
         <div className="border-t pt-8 pb-4 text-center" style={{ borderColor: 'var(--border)' }}>
           <motion.button
