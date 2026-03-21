@@ -131,8 +131,9 @@ function FileDropZone({ onTextExtracted, id }: FileDropZoneProps) {
 
         onTextExtracted(data.text);
         setUploadedFilename(file.name);
-      } catch {
-        setError('Failed to upload file. Please try again.');
+      } catch (err) {
+        console.error('File upload error:', err);
+        setError('Failed to upload file. Try a smaller file or paste the text directly.');
       } finally {
         setIsUploading(false);
       }
@@ -225,7 +226,7 @@ function FileDropZone({ onTextExtracted, id }: FileDropZoneProps) {
         className="text-xs mt-1.5 text-center"
         style={{ color: 'var(--muted)', opacity: 0.7 }}
       >
-        .txt, .md, .pdf, .docx
+        .txt, .md, .pdf, .docx — use &quot;Copy&quot; or &quot;Download&quot; from the source app for best results
       </p>
 
       {/* Error message */}

@@ -30,6 +30,13 @@ export async function POST(request: NextRequest) {
       const pdfParse = require('pdf-parse');
       const pdfData = await pdfParse(buffer);
       text = pdfData.text;
+
+      // Browser-printed PDFs (from "Save as PDF") often have poor text layers
+      if (!text || text.length < 10) {
+        return NextResponse.json({
+          error: 'This PDF doesn\'t contain readable text. If you saved it from another app using "Print / Save as PDF", try the "Copy" or "Download" button instead — that gives you a .md file that works perfectly here.'
+        }, { status: 400 });
+      }
     } else if (filename.endsWith('.docx')) {
       // Parse DOCX
       // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -71,7 +78,7 @@ export async function POST(request: NextRequest) {
 
     if (!text || text.length < 10) {
       return NextResponse.json({
-        error: 'Could not extract text from file. Please try pasting the text directly.'
+        error: 'Could not extract text from this file. Try using the "Copy" button in the source app and pasting the text directly.'
       }, { status: 400 });
     }
 
